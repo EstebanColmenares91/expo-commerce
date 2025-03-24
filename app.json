@@ -4,6 +4,7 @@
     "slug": "my-expo-app",
     "version": "1.0.0",
     "newArchEnabled": true,
+    "scheme": "expo-commerce",
     "web": {
       "favicon": "./assets/favicon.png"
     },
