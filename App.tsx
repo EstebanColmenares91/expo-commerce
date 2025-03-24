@@ -1,13 +1,18 @@
-import { ScreenContent } from 'components/ScreenContent';
-import { StatusBar } from 'expo-status-bar';
+import { Text, View } from 'react-native';
 
 import './global.css';
 
 export default function App() {
   return (
-    <>
-      <ScreenContent title="Home" path="App.tsx" />
-      <StatusBar style="auto" />
-    </>
+    <View className={styles.container}>
+      <Text className={styles.title}>Hola mundo</Text>
+      <View className={styles.separator} />
+    </View>
   );
 }
+
+const styles = {
+  container: `items-center flex-1 justify-center`,
+  separator: `h-[1px] my-7 w-4/5 bg-gray-200`,
+  title: `text-xl font-bold`,
+};
