@@ -55,7 +55,7 @@ export default function App() {
           renderItem={({ item }) => (
             <TouchableOpacity
               className="m-2 flex-1 overflow-hidden rounded-lg bg-white shadow-sm"
-              onPress={() => router.push(`/product-detail/${item.id}`)}>
+              onPress={() => router.push(`/category/${item.id}`)}>
               <Image source={{ uri: item.image }} className="h-64 rounded-lg" resizeMode="cover" />
               <View className="p-3">
                 <View className="flex-row items-start justify-between">

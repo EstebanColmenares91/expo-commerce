@@ -1,7 +1,7 @@
 import useSWR from 'swr';
 
 export interface Props<T> {
-  key: string;
+  key: string | null;
   fetcher: () => Promise<T>;
 }
 
