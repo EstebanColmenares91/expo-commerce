@@ -30,7 +30,7 @@ export default function ProductsByCategoryPage() {
                     {item.title}
                   </Text>
                 </View>
-                <Text className="text-primary-600 mt-1 text-lg font-bold">
+                <Text className="mt-1 text-lg font-bold text-primary-600">
                   ${item.price.toFixed(2)}
                 </Text>
               </View>
