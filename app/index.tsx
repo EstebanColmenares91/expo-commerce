@@ -27,6 +27,13 @@ export default function App() {
               placeholder="Search products..."
               value={searchText}
               onChangeText={setSearchText}
+              onSubmitEditing={({ nativeEvent: { text } }) => {
+                router.push(`/products`);
+                router.setParams({ title: text });
+                router.setParams({ price: 0 });
+                router.setParams({ price_min: 0 });
+                router.setParams({ price_max: 0 });
+              }}
             />
           </View>
           <TouchableOpacity

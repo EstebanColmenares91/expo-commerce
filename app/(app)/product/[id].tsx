@@ -1,7 +1,8 @@
+import LikeButton from 'core/components/LikeButton';
 import useData from 'core/hooks/useData';
 import { getProduct } from 'core/services/products.service';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { Heart, X } from 'lucide-react-native';
+import { X } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -60,10 +61,10 @@ export default function ProductDetailPage() {
           <View className="p-4">
             <Text className="text-2xl font-bold text-gray-800">{product?.title}</Text>
             <View className="flex-row items-center justify-between">
-              <Text className="mt-2 text-2xl font-bold text-primary-600">
+              <Text className="text-primary-600 mt-2 text-2xl font-bold">
                 ${product?.price.toFixed(2)}
               </Text>
-              <Heart size={24} color="red" />
+              <LikeButton />
             </View>
             <Text className="mt-4 text-gray-600">{product?.description}</Text>
           </View>
@@ -72,7 +73,7 @@ export default function ProductDetailPage() {
         {/* Add to Cart Button */}
         <View className="border-t border-gray-200 p-4">
           <TouchableOpacity
-            className="flex-row items-center justify-center rounded-lg bg-primary-500 p-4"
+            className="bg-primary-500 flex-row items-center justify-center rounded-lg p-4"
             //   onPress={() => addProduct(product)}
           >
             {/* <ShoppingCart size={20} color="#fff" className="mr-2" />

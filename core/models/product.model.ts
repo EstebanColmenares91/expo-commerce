@@ -11,3 +11,12 @@ export interface Product {
   title: string;
   updatedAt: Date;
 }
+
+export interface ProductPaginParams {
+  limit?: number;
+  offset?: number;
+  price?: number;
+  title?: string;
+  price_min?: number;
+  price_max?: number;
+}
