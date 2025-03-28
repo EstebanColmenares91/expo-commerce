@@ -61,7 +61,7 @@ export default function ProductDetailPage() {
           <View className="p-4">
             <Text className="text-2xl font-bold text-gray-800">{product?.title}</Text>
             <View className="flex-row items-center justify-between">
-              <Text className="text-primary-600 mt-2 text-2xl font-bold">
+              <Text className="mt-2 text-2xl font-bold text-primary-600">
                 ${product?.price.toFixed(2)}
               </Text>
               <LikeButton />
@@ -73,7 +73,7 @@ export default function ProductDetailPage() {
         {/* Add to Cart Button */}
         <View className="border-t border-gray-200 p-4">
           <TouchableOpacity
-            className="bg-primary-500 flex-row items-center justify-center rounded-lg p-4"
+            className="flex-row items-center justify-center rounded-lg bg-primary-500 p-4"
             //   onPress={() => addProduct(product)}
           >
             {/* <ShoppingCart size={20} color="#fff" className="mr-2" />

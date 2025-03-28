@@ -6,11 +6,8 @@ import { FlatList, ListRenderItem, TouchableOpacity, View, Image, Text } from 'r
 
 export default function Products() {
   const router = useRouter();
-  const { title, price, price_min, price_max } = useLocalSearchParams();
-
-  console.log({ title, price, price_min, price_max });
-
-  const { data: products } = useData({ key: '/products', fetcher: () => getProducts() });
+  const params = useLocalSearchParams();
+  const { data: products } = useData({ key: '/products', fetcher: () => getProducts(params) });
 
   const renderProduct: ListRenderItem<Product> = ({ item }) => {
     const firstImage = item.images[0];
