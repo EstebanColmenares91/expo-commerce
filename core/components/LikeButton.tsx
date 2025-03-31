@@ -8,7 +8,7 @@ export default function LikeButton() {
 
   return (
     <TouchableOpacity onPress={handleLike} aria-label={isLiked ? 'Saved' : 'Unsaved'}>
-      <Heart size={24} color={`${isLiked ? 'red' : 'gray'}`} />
+      <Heart size={24} fill={`${isLiked ? 'red' : 'gray'}`} />
     </TouchableOpacity>
   );
 }
