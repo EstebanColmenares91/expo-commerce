@@ -14,7 +14,7 @@ export default function Products() {
     return (
       <TouchableOpacity
         className="m-2 flex-1 overflow-hidden rounded-lg bg-white shadow-sm"
-        onPress={() => router.push(`/product/${item.id}`)}>
+        onPress={() => router.push(`/products/${item.id}`)}>
         <Image source={{ uri: firstImage }} className="h-64 rounded-lg" resizeMode="cover" />
         <View className="p-3">
           <View className="flex-row items-start justify-between">
