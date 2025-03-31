@@ -1,5 +1,13 @@
 import { useController } from 'react-hook-form';
-import { StyleProp, Text, TextInput, TextInputProps, View, ViewProps, ViewStyle } from 'react-native';
+import {
+  StyleProp,
+  Text,
+  TextInput,
+  TextInputProps,
+  View,
+  ViewProps,
+  ViewStyle,
+} from 'react-native';
 
 interface CustomInputProps extends TextInputProps {
   label?: string;
@@ -20,15 +28,15 @@ export function Input(props: CustomInputProps): React.JSX.Element {
   return (
     <View className={props.containerStyle}>
       <Text className="mb-2 font-semibold">{label}</Text>
-      <View className={`rounded-lg border border-gray-300 px-2 py-1 ${props.inputContainerStyle}`}>
-        <TextInput 
-          {...otherProps} 
-          autoCapitalize="none" 
-          className="ml-2 rounded-lg text-base" 
+      <View className={`rounded-lg border border-gray-300 ${props.inputContainerStyle}`}>
+        <TextInput
+          {...otherProps}
+          autoCapitalize="none"
+          className="ml-2 rounded-lg text-base"
           onChangeText={field.onChange}
           value={field.value}
         />
       </View>
     </View>
-  )
+  );
 }
