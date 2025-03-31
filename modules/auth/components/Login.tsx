@@ -18,7 +18,7 @@ export function Login() {
         console.log(data);
         const { email, password } = data;
         const { status } = await login({ email, password });
-        if (status === 200) {
+        if (status === 201) {
             console.log("Login successful!");
         } else {
             console.log("Login failed!");
