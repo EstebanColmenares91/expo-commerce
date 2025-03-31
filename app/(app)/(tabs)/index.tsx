@@ -90,18 +90,21 @@ export default function HomePage() {
       </Modal>
 
       <View className="bg-white px-4 pb-4 pt-8 shadow-sm">
-        <View className="flex-row items-center space-x-4">
+        <View className="flex-row items-center">
           <View className="flex-1 flex-row items-center rounded-full bg-gray-100 px-4 py-2">
             <Search size={20} color="#6b7280" />
             <Input
-              control={control}
-              name="title"
               className="ml-2 flex-1 text-base w-full"
+              containerStyle='flex-1 flex-row'
+              control={control}
+              inputContainerStyle="w-full border-0"
+              name="title"
               onSubmitEditing={handleFilters}
+              placeholder='Seach for a product...'
             />
           </View>
           <TouchableOpacity
-            className="rounded-full bg-primary-500 p-3"
+            className="rounded-full bg-primary-500 p-3 items-end"
             onPress={() => setShowModal((prevState) => !prevState)}>
             <SlidersHorizontal size={20} color="#fff" />
           </TouchableOpacity>
