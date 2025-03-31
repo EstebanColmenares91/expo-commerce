@@ -5,32 +5,46 @@ import { getCategories } from 'core/services/categories.service';
 import { useRouter } from 'expo-router';
 import { Search, SlidersHorizontal, X } from 'lucide-react-native';
 import { useState } from 'react';
-import { FlatList, TextInput, TouchableOpacity, View, Text, Image, Modal } from 'react-native';
-import '../global.css';
+import { FlatList, TouchableOpacity, View, Text, Image, Modal } from 'react-native';
+import '../../../global.css';
+import { useForm } from 'react-hook-form';
 
-export default function App() {
+interface FilterParams {
+  title?: string;
+  price?: string;
+  price_min?: string;
+  price_max?: string;
+}
+
+export default function HomePage() {
   const router = useRouter();
   const { data: categories } = useData({ key: '/categories', fetcher: () => getCategories() });
-
   const [showModal, setShowModal] = useState(false);
-  // Params filters states
-  const [title, setTitle] = useState('');
-  const [price, setPrice] = useState<string>('');
-  const [minPrice, setMinPrice] = useState<string>('');
-  const [maxPrice, setMaxPrice] = useState<string>('');
+  const { control, handleSubmit } = useForm<FilterParams>({
+    defaultValues: {
+      title: '',
+      price: '',
+      price_min: '',
+      price_max: '',
+    },
+  });
 
   const handleFilters = () => {
-    router.push(`/products`);
-    router.setParams({ title });
-    router.setParams({ price });
-    router.setParams({ price_min: minPrice });
-    router.setParams({ price_max: maxPrice });
+    handleSubmit((data) => {
+      router.push(`/products`);
+      router.setParams({ title: data.title });
+      router.setParams({ price: data.price });
+      router.setParams({ price_min: data.price_min });
+      router.setParams({ price_max: data.price_max });
+    })();
   };
 
   const handleNullFilters = () => {
-    setPrice('');
-    setMinPrice('');
-    setMaxPrice('');
+    router.setParams({ title: undefined });
+    router.setParams({ price: undefined });
+    router.setParams({ price_min: undefined });
+    router.setParams({ price_max: undefined });
+    setShowModal(false);
   };
 
   return (
@@ -42,18 +56,26 @@ export default function App() {
           </TouchableOpacity>
           <Text className="text-center text-2xl font-bold">Filter your products!</Text>
           <View className="gap-4">
-            <Input value={price} onChangeText={setPrice} placeholder="Set a price" label="Price" />
             <Input
-              value={minPrice}
-              onChangeText={setMinPrice}
-              placeholder="Set a min price"
-              label="Min price"
+              control={control}
+              name="price"
+              label="Price"
+              placeholder="Set a price"
+              className="w-full"
             />
             <Input
-              value={maxPrice}
-              onChangeText={setMaxPrice}
-              placeholder="Set a max price"
+              control={control}
+              name="price_min"
+              label="Min price"
+              placeholder="Set a min price"
+              className="w-full"
+            />
+            <Input
+              control={control}
+              name="price_max"
               label="Max price"
+              placeholder="Set a max price"
+              className="w-full"
             />
           </View>
           <View className="flex-row gap-2">
@@ -71,11 +93,10 @@ export default function App() {
         <View className="flex-row items-center space-x-4">
           <View className="flex-1 flex-row items-center rounded-full bg-gray-100 px-4 py-2">
             <Search size={20} color="#6b7280" />
-            <TextInput
-              className="ml-2 flex-1 text-base"
-              placeholder="Search products..."
-              value={title}
-              onChangeText={setTitle}
+            <Input
+              control={control}
+              name="title"
+              className="ml-2 flex-1 text-base w-full"
               onSubmitEditing={handleFilters}
             />
           </View>
