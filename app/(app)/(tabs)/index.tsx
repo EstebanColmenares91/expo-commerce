@@ -20,7 +20,7 @@ export default function HomePage() {
   const router = useRouter();
   const { data: categories } = useData({ key: '/categories', fetcher: () => getCategories() });
   const [showModal, setShowModal] = useState(false);
-  const { control, handleSubmit } = useForm<FilterParams>({
+  const { control, handleSubmit, reset } = useForm<FilterParams>({
     defaultValues: {
       title: '',
       price: '',
@@ -29,23 +29,24 @@ export default function HomePage() {
     },
   });
 
+  const handleByTitle = () => {
+    handleSubmit((data) => {
+      if (data.title?.trim().length === 0) return;
+      router.push(`/products`);
+      router.setParams({ title: data.title });
+    })();
+  };
+
   const handleFilters = () => {
     handleSubmit((data) => {
       router.push(`/products`);
-      router.setParams({ title: data.title });
       router.setParams({ price: data.price });
       router.setParams({ price_min: data.price_min });
       router.setParams({ price_max: data.price_max });
     })();
   };
 
-  const handleNullFilters = () => {
-    router.setParams({ title: undefined });
-    router.setParams({ price: undefined });
-    router.setParams({ price_min: undefined });
-    router.setParams({ price_max: undefined });
-    setShowModal(false);
-  };
+  const handleNullFilters = () => reset();
 
   return (
     <View className="flex-1 bg-gray-50">
@@ -94,17 +95,17 @@ export default function HomePage() {
           <View className="flex-1 flex-row items-center rounded-full bg-gray-100 px-4 py-2">
             <Search size={20} color="#6b7280" />
             <Input
-              className="ml-2 flex-1 text-base w-full"
-              containerStyle='flex-1 flex-row'
+              className="ml-2 w-full flex-1 text-base"
+              containerStyle="flex-1 flex-row"
               control={control}
               inputContainerStyle="w-full border-0"
               name="title"
-              onSubmitEditing={handleFilters}
-              placeholder='Seach for a product...'
+              onSubmitEditing={handleByTitle}
+              placeholder="Seach for a product..."
             />
           </View>
           <TouchableOpacity
-            className="rounded-full bg-primary-500 p-3 items-end"
+            className="items-end rounded-full bg-primary-500 p-3"
             onPress={() => setShowModal((prevState) => !prevState)}>
             <SlidersHorizontal size={20} color="#fff" />
           </TouchableOpacity>
