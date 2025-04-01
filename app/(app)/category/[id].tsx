@@ -1,6 +1,6 @@
 import useData from 'core/hooks/useData';
-import { getProductsByCategoryId } from 'core/services/categories.service';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { getCategoryById, getProductsByCategoryId } from 'core/services/categories.service';
+import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { FlatList, Text, TouchableOpacity, View, Image } from 'react-native';
 
 export default function ProductsByCategoryPage() {
@@ -11,8 +11,14 @@ export default function ProductsByCategoryPage() {
     fetcher: () => getProductsByCategoryId(Number(id)),
   });
 
+  const { data: category } = useData({
+    key: id ? `/categories/${id}` : null,
+    fetcher: () => getCategoryById(Number(id)),
+  });
+
   return (
     <>
+      <Stack.Screen options={{ headerTitle: category?.name ?? '' }} />
       <FlatList
         data={productsByCategory}
         keyExtractor={(item) => item.id.toString()}

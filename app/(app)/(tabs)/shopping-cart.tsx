@@ -38,10 +38,6 @@ export default function ShoppingCartPage() {
 
   return (
     <View className="flex-1 bg-gray-50">
-      <View className="bg-white px-4 pb-4 pt-12 shadow-sm">
-        <Text className="text-2xl font-bold text-gray-800">Shopping Cart</Text>
-      </View>
-
       <FlatList
         data={SAMPLE_CART}
         renderItem={renderCartItem}

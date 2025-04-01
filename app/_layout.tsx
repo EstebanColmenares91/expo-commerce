@@ -5,7 +5,7 @@ import { SWRConfig } from 'swr';
 export default function AppLayout(): React.JSX.Element {
   return (
     <SWRConfig>
-      <Stack />
+      <Stack screenOptions={{ headerShown: false }} />
       <StatusBar style="auto" />
     </SWRConfig>
   );
