@@ -1,5 +1,7 @@
+import { fetcher } from "core/utils/fetcher";
 import { LoginFormValues, RegisterFormValues } from "../models/auth.model";
 import { setAuthKey } from "./token.service";
+import { User } from "core/models/user.model";
 
 interface LoginResponse {
     access_token  : string;
@@ -38,7 +40,6 @@ export async function login(body: LoginFormValues): Promise<void> {
     } catch (error) {
         if(error?.message) throw new Error(error)
     }
-
 }
 
 export async function emailAvailability(data: { email: string }): Promise<isEmailAvaible> {
@@ -69,4 +70,8 @@ export async function register(data: RegisterFormValues) {
         const { email, password } = data
         await login({ email, password })
     }
+}
+
+export async function getProfile(): Promise<User> {
+    return await fetcher<User>(`https://api.escuelajs.co/api/v1/auth/profile`)
 }
