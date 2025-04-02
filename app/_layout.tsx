@@ -1,3 +1,4 @@
+import { AuthProvider, useSession } from 'core/context/UserContext';
 import useData from 'core/hooks/useData';
 import { initAxios } from 'core/interceptors/token.interceptor';
 import { User } from 'core/models/user.model';
@@ -9,16 +10,12 @@ import { SWRConfig } from 'swr';
 initAxios();
 
 export default function AppLayout(): React.JSX.Element {
-  const {
-    data: user,
-    isLoading,
-    error,
-  } = useData<User>({ key: '/profile', fetcher: () => getProfile() });
-
   return (
     <SWRConfig>
-      <Stack screenOptions={{ headerShown: false }} />
-      <StatusBar style="auto" />
+      <AuthProvider>
+        <Stack screenOptions={{ headerShown: false }} />
+        <StatusBar style="auto" />
+      </AuthProvider>
     </SWRConfig>
   );
 }
