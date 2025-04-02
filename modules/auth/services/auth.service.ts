@@ -1,4 +1,5 @@
 import { LoginFormValues, RegisterFormValues } from "../models/auth.model";
+import { setAuthKey } from "./token.service";
 
 interface LoginResponse {
     access_token  : string;
@@ -18,16 +19,26 @@ interface RegisterResponse {
     id: number;
 }
 
-export async function login(data: LoginFormValues): Promise<LoginResponse> {
-    const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/auth/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-    })
+export async function login(body: LoginFormValues): Promise<void> {
+    try {
+        const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/v1/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        })
 
-    return await res.json()
+        if(res.status !== 201) {
+            throw new Error('Hubo un error al iniciar sesión. Por favor intente más tarde.')
+        }
+
+        const data: LoginResponse = await res.json()
+        return setAuthKey(data.access_token)
+    } catch (error) {
+        if(error?.message) throw new Error(error)
+    }
+
 }
 
 export async function emailAvailability(data: { email: string }): Promise<isEmailAvaible> {

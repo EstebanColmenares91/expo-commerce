@@ -2,11 +2,13 @@ import { Input } from 'core/components/Input';
 import { useForm } from 'react-hook-form';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Mail, Lock } from 'lucide-react-native';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 import { LoginFormValues } from 'modules/auth/models/auth.model';
 import { IconedInput } from 'core/components/IconedInput';
+import { login } from 'modules/auth/services/auth.service';
 
 export default function LoginPage() {
+  const router = useRouter();
   const { control, handleSubmit } = useForm<LoginFormValues>({
     defaultValues: {
       email: 'john@mail.com',
@@ -15,8 +17,12 @@ export default function LoginPage() {
   });
 
   const onSubmit = () => {
-    handleSubmit((data: LoginFormValues) => {
-      console.log(data);
+    handleSubmit((body: LoginFormValues) => {
+      login(body)
+        .then(() => {
+          router.push('/(tabs)/profile');
+        })
+        .catch((error) => console.log(error));
     })();
   };
 
