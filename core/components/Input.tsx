@@ -1,20 +1,10 @@
 import { useController } from 'react-hook-form';
-import {
-  StyleProp,
-  Text,
-  TextInput,
-  TextInputProps,
-  View,
-  ViewProps,
-  ViewStyle,
-} from 'react-native';
+import { Text, TextInput, TextInputProps } from 'react-native';
 
 interface CustomInputProps extends TextInputProps {
   label?: string;
   name: string;
-  control: any; // Replace with the actual type of your control
-  containerStyle?: ViewProps['className'];
-  inputContainerStyle?: ViewProps['className'];
+  control: any;
 }
 
 export function Input(props: CustomInputProps): React.JSX.Element {
@@ -26,17 +16,15 @@ export function Input(props: CustomInputProps): React.JSX.Element {
   });
 
   return (
-    <View className={props.containerStyle}>
+    <>
       <Text className="mb-2 font-semibold">{label}</Text>
-      <View className={`rounded-lg border border-gray-300 ${props.inputContainerStyle}`}>
-        <TextInput
-          {...otherProps}
-          autoCapitalize="none"
-          className="ml-2 rounded-lg text-base"
-          onChangeText={field.onChange}
-          value={field.value}
-        />
-      </View>
-    </View>
+      <TextInput
+        className="ml-2 flex-1 rounded-lg text-base"
+        onChangeText={field.onChange}
+        value={field.value}
+        autoCapitalize="none"
+        {...otherProps}
+      />
+    </>
   );
 }

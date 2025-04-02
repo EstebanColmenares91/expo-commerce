@@ -96,9 +96,7 @@ export default function HomePage() {
             <Search size={20} color="#6b7280" />
             <Input
               className="ml-2 w-full flex-1 text-base"
-              containerStyle="flex-1 flex-row"
               control={control}
-              inputContainerStyle="w-full border-0"
               name="title"
               onSubmitEditing={handleByTitle}
               placeholder="Seach for a product..."
