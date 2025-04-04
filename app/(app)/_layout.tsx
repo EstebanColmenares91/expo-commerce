@@ -35,8 +35,8 @@ export default function AppLayout(): React.JSX.Element {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="auth" options={{ headerShown: false }} />
       <Stack.Screen name="admin" options={{ headerShown: false }} />
-      <Stack.Screen name="category" />
-      <Stack.Screen name="products" />
+      <Stack.Screen name="category" options={{ headerShown: false }} />
+      <Stack.Screen name="products" options={{ headerShown: false }} />
       <Stack.Screen name="profile" options={{ headerShown: false }} />
     </Stack>
   );
