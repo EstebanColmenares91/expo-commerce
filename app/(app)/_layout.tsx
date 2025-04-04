@@ -1,36 +1,43 @@
 import { useSession } from 'core/context/UserContext';
-import useData from 'core/hooks/useData';
-import { User } from 'core/models/user.model';
 import { Stack, useRouter, useSegments } from 'expo-router';
-import { getProfile } from 'modules/auth/services/auth.service';
 import { isValidToken } from 'modules/auth/services/token.service';
 import { useEffect } from 'react';
 
 export default function AppLayout(): React.JSX.Element {
   const router = useRouter();
   const segments = useSegments();
-  const { handleSignIn, handleSignOut } = useSession();
-  const { data: user, isLoading, error } = useData<User>({ key: '/profile', fetcher: getProfile });
+  const { user: localUser, handleSignIn, handleSignOut } = useSession();
 
   useEffect(() => {
     isValidToken()
       .then((isValid) => {
-        if (isValid) handleSignIn(user);
+        if (localUser) return;
+        if (!localUser && isValid) return handleSignIn();
       })
-      .catch(() => handleSignOut);
+      .catch(() => handleSignOut());
   }, []);
 
   useEffect(() => {
     const authRoute = segments.at(1) === 'auth';
-    if (user && authRoute) {
-      router.replace('/');
+    const profileRoute = segments.at(1) === 'profile';
+
+    if (localUser && authRoute) {
+      return router.replace('/');
     }
-  }, [user, segments]);
+
+    if (!localUser && profileRoute) {
+      return router.replace('/(app)/auth');
+    }
+  }, [localUser, segments]);
 
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="auth" options={{ headerShown: false }} />
+      <Stack.Screen name="admin" options={{ headerShown: false }} />
+      <Stack.Screen name="category" />
+      <Stack.Screen name="products" />
+      <Stack.Screen name="profile" options={{ headerShown: false }} />
     </Stack>
   );
 }

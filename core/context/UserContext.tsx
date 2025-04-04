@@ -1,10 +1,11 @@
 import { User } from 'core/models/user.model';
+import { getProfile } from 'modules/auth/services/auth.service';
 import { removeAuthKey } from 'modules/auth/services/token.service';
 import { createContext, useContext, useState } from 'react';
 
 export interface AuthContextType {
   user: User | null;
-  handleSignIn: (user: User) => void;
+  handleSignIn: () => Promise<void>;
   handleSignOut: () => Promise<void>;
 }
 
@@ -14,7 +15,7 @@ interface PropsWithChildren {
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
-  handleSignIn: () => {},
+  handleSignIn: () => Promise.resolve(),
   handleSignOut: () => Promise.resolve(),
 });
 
@@ -27,8 +28,8 @@ export const useSession = (): AuthContextType => useContext(AuthContext);
 export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const handleSignIn = (user: User) => {
-    setUser(user);
+  const handleSignIn = async () => {
+    getProfile().then((user) => setUser(user));
   };
 
   const handleSignOut = async () => {
