@@ -7,7 +7,7 @@ interface CartState {
   cart: ProductWithQuantity[];
   addToCart: (product: Omit<ProductWithQuantity, 'quantity'>) => void;
   removeFromCart: (productId: string | number) => void;
-  updateQuantity: (productId: string | number, newQuantity: number) => void;
+  subtractFromCart: (productId: string | number) => void;
   clearCart: () => void;
   getTotalItems: () => number;
   getTotalPrice: () => number;
@@ -43,17 +43,28 @@ export const useShoppingCartStore = create<CartState>()(
         }));
       },
 
-      updateQuantity: (productId, newQuantity) => {
-        if (newQuantity < 1) {
-          get().removeFromCart(productId);
-          return;
-        }
+      subtractFromCart: (productId) => {
+        set((state) => {
+          const existingProduct = state.cart.find((p) => p.id === productId);
 
-        set((state) => ({
-          cart: state.cart.map((product) =>
-            product.id === productId ? { ...product, quantity: newQuantity } : product
-          ),
-        }));
+          if (!existingProduct) {
+            return state; // Product not found, no changes
+          }
+
+          if (existingProduct.quantity <= 1) {
+            // Remove product if quantity would become 0
+            return {
+              cart: state.cart.filter((product) => product.id !== productId),
+            };
+          } else {
+            // Decrement quantity
+            return {
+              cart: state.cart.map((p) =>
+                p.id === productId ? { ...p, quantity: p.quantity - 1 } : p
+              ),
+            };
+          }
+        });
       },
 
       clearCart: () => {
