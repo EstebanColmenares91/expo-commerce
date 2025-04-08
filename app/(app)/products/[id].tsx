@@ -1,14 +1,17 @@
 import LikeButton from 'core/components/LikeButton';
 import useData from 'core/hooks/useData';
 import { getProduct } from 'core/services/products.service';
+import { useShoppingCartStore } from 'core/store/shopping-cart';
 import { Stack, useLocalSearchParams } from 'expo-router';
-import { X } from 'lucide-react-native';
+import { ShoppingCart, X } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, useWindowDimensions, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 export default function ProductDetailPage() {
+  const { addToCart, getProductQuantity } = useShoppingCartStore();
   const { id } = useLocalSearchParams();
+
   const { data: product, isLoading } = useData({
     key: id ? `/products/${id}` : null,
     fetcher: () => getProduct(Number(id)),
@@ -71,22 +74,22 @@ export default function ProductDetailPage() {
         </ScrollView>
 
         {/* Add to Cart Button */}
-        <View className="border-t border-gray-200 p-4">
-          <TouchableOpacity
-            className="flex-row items-center justify-center rounded-lg bg-primary-500 p-4"
-            //   onPress={() => addProduct(product)}
-          >
-            {/* <ShoppingCart size={20} color="#fff" className="mr-2" />
-          {products.length > 0 ? (
-            <Text className="ml-2 text-lg font-semibold text-white">
-              {amountSameProduct(product)}
-            </Text>
-          ) : (
-            <Text className="ml-2 text-lg font-semibold text-white">Add to Cart</Text>
-          )} */}
-            <Text className="ml-2 text-lg font-semibold text-white">Add to Cart</Text>
-          </TouchableOpacity>
-        </View>
+        {product && (
+          <View className="border-t border-gray-200 p-4">
+            <TouchableOpacity
+              className="flex-row items-center justify-center rounded-lg bg-primary-500 p-4"
+              onPress={() => addToCart(product)}>
+              {getProductQuantity(product.id) > 0 ? (
+                <Text className="ml-2 text-lg font-semibold text-white">
+                  Add more: {getProductQuantity(product.id)}
+                </Text>
+              ) : (
+                <Text className="ml-2 text-lg font-semibold text-white">Add to Cart</Text>
+              )}
+              <ShoppingCart size={20} color="#fff" className="mr-2" />
+            </TouchableOpacity>
+          </View>
+        )}
 
         {/* Full Screen Carousel */}
         {selectedImageIndex !== null && (

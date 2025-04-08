@@ -12,6 +12,10 @@ export interface Product {
   updatedAt: Date;
 }
 
+export interface ProductWithQuantity extends Product {
+  quantity: number;
+}
+
 export interface ProductPaginParams {
   limit?: number;
   offset?: number;
