@@ -1,50 +1,18 @@
-import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native';
-import { Package, ChevronRight, Star } from 'lucide-react-native';
-import { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, FlatList, ListRenderItem } from 'react-native';
+import { Package, Star } from 'lucide-react-native';
+import { useOrdersStore } from 'core/store/orders';
+import { Order } from 'core/models/order.model';
+import { useSession } from 'core/context/UserContext';
 
-// Sample orders data - in a real app, this would come from your backend
-const SAMPLE_ORDERS = [
-  {
-    id: 'ORD001',
-    date: '2024-02-15',
-    status: 'Delivered',
-    total: 199.99,
-    items: [
-      {
-        id: '1',
-        name: 'Premium Wireless Headphones',
-        price: 199.99,
-        quantity: 1,
-        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&q=80',
-      },
-    ],
-  },
-  {
-    id: 'ORD002',
-    date: '2024-02-10',
-    status: 'In Transit',
-    total: 599.98,
-    items: [
-      {
-        id: '2',
-        name: 'Smart Watch Ultra Series 5',
-        price: 299.99,
-        quantity: 2,
-        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80',
-      },
-    ],
-  },
-];
-
-const OrderStatus = ({ status }) => {
+const OrderStatus = ({ status }: { status: Order['status'] }) => {
   const getStatusColor = () => {
     switch (status) {
-      case 'Delivered':
+      case 'completed':
         return 'bg-green-100 text-green-700';
-      case 'In Transit':
+      case 'pending':
         return 'bg-blue-100 text-blue-700';
-      case 'Processing':
-        return 'bg-yellow-100 text-yellow-700';
+      case 'cancelled':
+        return 'bg-red-100 text-white-700';
       default:
         return 'bg-gray-100 text-gray-700';
     }
@@ -58,9 +26,12 @@ const OrderStatus = ({ status }) => {
 };
 
 export default function Orders() {
-  const [orders] = useState(SAMPLE_ORDERS);
+  const { user } = useSession();
+  const { getUserOrders } = useOrdersStore();
 
-  const renderOrder = ({ item: order }) => (
+  const userOrders = getUserOrders(user ? user?.id.toString() : '');
+
+  const renderOrder: ListRenderItem<Order> = ({ item: order }) => (
     <TouchableOpacity
       className="mb-4 overflow-hidden rounded-lg bg-white shadow-sm"
       onPress={() => {}}>
@@ -70,16 +41,20 @@ export default function Orders() {
           <OrderStatus status={order.status} />
         </View>
         <Text className="mt-1 text-sm text-gray-500">
-          Placed on {new Date(order.date).toLocaleDateString()}
+          Placed on {new Date(order.timestamp).toLocaleDateString()}
         </Text>
       </View>
 
-      {order.items.map((item) => (
+      {order.products.map((item) => (
         <View key={item.id} className="flex-row items-center p-4">
-          <Image source={{ uri: item.image }} className="h-20 w-20 rounded-lg" resizeMode="cover" />
+          <Image
+            source={{ uri: item.images[0] }}
+            className="h-20 w-20 rounded-lg"
+            resizeMode="cover"
+          />
           <View className="ml-4 flex-1">
             <Text className="font-semibold text-gray-800" numberOfLines={2}>
-              {item.name}
+              {item.title}
             </Text>
             <Text className="mt-1 text-gray-600">
               Qty: {item.quantity} × ${item.price.toFixed(2)}
@@ -103,35 +78,22 @@ export default function Orders() {
 
   return (
     <View className="flex-1 bg-gray-50">
-      <View className="bg-white px-4 pb-4 pt-12 shadow-sm">
-        <View className="flex-row items-center justify-between">
-          <View>
-            <Text className="text-2xl font-bold text-gray-800">My Orders</Text>
-            <Text className="mt-1 text-gray-600">
-              {orders.length} {orders.length === 1 ? 'order' : 'orders'}
+      <FlatList
+        data={userOrders}
+        renderItem={renderOrder}
+        keyExtractor={(item) => item.id}
+        contentContainerClassName="p-4"
+        showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => (
+          <View className="flex-1 items-center justify-center p-4">
+            <Package size={48} color="#9ca3af" />
+            <Text className="mt-4 text-xl font-semibold text-gray-800">No orders yet</Text>
+            <Text className="mt-2 text-center text-gray-600">
+              Your order history will appear here
             </Text>
           </View>
-          <Package size={24} color="#4b5563" />
-        </View>
-      </View>
-
-      {orders.length > 0 ? (
-        <FlatList
-          data={orders}
-          renderItem={renderOrder}
-          keyExtractor={(item) => item.id}
-          contentContainerClassName="p-4"
-          showsVerticalScrollIndicator={false}
-        />
-      ) : (
-        <View className="flex-1 items-center justify-center p-4">
-          <Package size={48} color="#9ca3af" />
-          <Text className="mt-4 text-xl font-semibold text-gray-800">No orders yet</Text>
-          <Text className="mt-2 text-center text-gray-600">
-            Your order history will appear here
-          </Text>
-        </View>
-      )}
+        )}
+      />
     </View>
   );
 }

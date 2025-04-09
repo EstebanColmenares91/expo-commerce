@@ -1,7 +1,9 @@
 import LikeButton from 'core/components/LikeButton';
+import { useSession } from 'core/context/UserContext';
 import useData from 'core/hooks/useData';
 import { getProduct } from 'core/services/products.service';
 import { useShoppingCartStore } from 'core/store/shopping-cart';
+import { useWishlistStore } from 'core/store/wishlist';
 import { Stack, useLocalSearchParams } from 'expo-router';
 import { ShoppingCart, X } from 'lucide-react-native';
 import { useCallback, useState } from 'react';
@@ -9,6 +11,8 @@ import { Image, ScrollView, Text, TouchableOpacity, useWindowDimensions, View } 
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 export default function ProductDetailPage() {
+  const { user } = useSession();
+  const { userWishlists, isInWishlist } = useWishlistStore();
   const { addToCart, getProductQuantity } = useShoppingCartStore();
   const { id } = useLocalSearchParams();
 

@@ -3,6 +3,7 @@ import { Minus, Plus, Trash2 } from 'lucide-react-native';
 import { useShoppingCartStore } from 'core/store/shopping-cart';
 import { useMemo } from 'react';
 import { ProductWithQuantity } from 'core/models/product.model';
+import { Link } from 'expo-router';
 
 export default function ShoppingCartPage() {
   const { cart, addToCart, removeFromCart, subtractFromCart } = useShoppingCartStore();
@@ -47,9 +48,9 @@ export default function ShoppingCartPage() {
           <Text className="text-lg text-gray-600">Total</Text>
           <Text className="text-lg font-bold text-primary-600">${total.toFixed(2)}</Text>
         </View>
-        <TouchableOpacity className="rounded-lg bg-primary-500 py-4">
+        <Link className="rounded-lg bg-primary-500 py-4" href="products/checkout">
           <Text className="text-center text-lg font-semibold text-white">Checkout</Text>
-        </TouchableOpacity>
+        </Link>
       </View>
     </View>
   );
