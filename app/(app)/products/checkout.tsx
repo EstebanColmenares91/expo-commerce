@@ -131,7 +131,7 @@ export default function Checkout() {
           </View>
           <View className="flex-row justify-between border-t border-gray-200 pt-2">
             <Text className="text-lg font-bold text-gray-800">Total</Text>
-            <Text className="text-lg font-bold text-primary-600">${total.toFixed(2)}</Text>
+            <Text className="text-lg font-bold text-primary-600">$0</Text>
           </View>
         </View>
       </View>
@@ -145,7 +145,7 @@ export default function Checkout() {
       <View className="p-4">
         <TouchableOpacity onPress={handleCheckout} className="rounded-lg bg-primary-500 py-4">
           <Text className="text-center text-lg font-semibold text-white">
-            Confirm Payment (${total.toFixed(2)})
+            {/* Confirm Payment (${total.toFixed(2)}) */}
           </Text>
         </TouchableOpacity>
       </View>

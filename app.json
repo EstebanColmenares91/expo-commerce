@@ -1,15 +1,27 @@
 {
   "expo": {
-    "name": "my-expo-app",
-    "slug": "my-expo-app",
+    "name": "my-expo-commerce",
+    "slug": "my-expo-commerce",
     "version": "1.0.0",
     "newArchEnabled": true,
-    "scheme": "expo-commerce",
+    "scheme": "my-expo-commerce",
     "experiments": {
       "tsconfigPaths": true
     },
     "plugins": [
-      ["expo-router"],
+      [
+        "expo-router",
+        {
+          "origin": "https://my-expo-commerce.expo.app"
+        }
+      ],
+      [
+        "@stripe/stripe-react-native",
+        {
+          "enableGooglePay": true,
+          "publishableKey": "pk_test_51RIwZDRrdRHcpSm84fp1wJsSCK9UCeZh1OIFkCvSSuXB8nakB6AQvuc54lqnafzjyKwnSKpcKn8WnvwlGEyzNCPK0045lRXkzl"
+        }
+      ],
       [
         "expo-splash-screen",
         {
@@ -26,20 +38,30 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "icon": {
         "light": "./assets/icon.png",
         "dark": "./assets/ios-dark.png",
         "tinted": "./assets/ios-tinted.png"
-
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
+      },
+      "package": "com.estebancode91.myexpocommerce"
+    },
+    "extra": {
+      "router": {
+        "origin": "https://my-expo-commerce.expo.app"
+      },
+      "eas": {
+        "projectId": "749bf645-86a5-421d-b8cf-384efaf3e024"
       }
     }
   }
